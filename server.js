@@ -74,7 +74,33 @@ const shoes = [
   { name: "Fifty-Inch Heels", price: 175, type: "heel" }
 ];
 
-app.get("/")
+app.get("/shoes", (req, res) => {
+  
+  let minPrice = req.query.minprice;
+  let maxPrice = req.query.maxprice;
+  let type = req.query.type
+
+  let filteredShoes = shoes;
+
+  if (minPrice) {
+    minPrice = parseFloat(minPrice);
+    filteredShoes = filteredShoes.filter(shoe => shoe.price >= minPrice);
+  }
+
+  if (maxPrice) {
+    maxPrice = parseFloat(maxPrice);
+    filteredShoes = filteredShoes.filter(shoe => shoe.price <= maxPrice);
+  }
+
+  if (type) {
+    filteredShoes = filteredShoes.filter(shoe => shoe.type === type);
+  }
+
+  res.json(filteredShoes);
+
+
+});
+
 
 // Listen for requests on port 3000
 app.listen(3000, () => {
